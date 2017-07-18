@@ -1,0 +1,29 @@
+{
+  "name": "toornement-quick-schedule",
+  "version": "1.0.0",
+  "description": "A small program to update match starting time at toornament.com with set intervals.",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/irvin93d/toornement-quick-schedule.git"
+  },
+  "keywords": [
+    "toornement"
+  ],
+  "author": "Duane Irvin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/irvin93d/toornement-quick-schedule/issues"
+  },
+  "homepage": "https://github.com/irvin93d/toornement-quick-schedule#readme",
+  "dependencies": {
+    "async": "^2.5.0",
+    "request": "^2.81.0"
+  }
+}
