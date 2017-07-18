@@ -8,7 +8,7 @@ var TOURNAMENT_NAME;
 var rounds = [
 	{simultaneousMatches: 6}, 
 	{simultaneousMatches: 4},
-	{simultaneousMatches: 4},
+	{simultaneousMatches: 4, pauseBefore: 50},
 	{simultaneousMatches: 4},
 	{simultaneousMatches: 1},
 	{simultaneousMatches: 1}
@@ -119,8 +119,12 @@ waterfall([
 				let matchNumber = match.number;
 				let roundNumber = match.round_number;
 				let simultaneousMatches = rounds[roundNumber-1].simultaneousMatches;
+				let pauseBefore = rounds[roundNumber-1].pauseBefore;
 				if(matchIndex && !((matchNumber - 1) % simultaneousMatches)) {
 					date = addMinutes(date, 25);
+				}
+				if(!(matchNumber-1) && pauseBefore) {
+					date = addMinutes(date, pauseBefore);
 				}
 
 				let matchId = match.id;
