@@ -19,11 +19,16 @@ function addMinutes(date,minutes) {
 	return new Date(date.getTime() + minutes*60000);	
 }
 
+// Move into main
+var options = {};
 (function main() {
-	let options = {}
 	options.tmtName = process.argv[2];
+	options.firstStartTime = new Date(process.argv[3]);
 	if(!options.tmtName) {
 		console.error('Tournement name is missing!');
+	}
+	if(!options.firstStartTime.getTime()){
+		console.error('Start time is missing');
 	}
 
 	// TODO: Remove below after everything is in main
@@ -142,7 +147,7 @@ waterfall([
 				});
 			}
 
-			doPatchLoop(0, new Date('2017-10-06 12:00:00'));
+			doPatchLoop(0, options.firstStartTime);// new Date('2017-10-06 12:00:00'));
 
 		} else{
 			console.log('Error code: ' + res.statusCode);
