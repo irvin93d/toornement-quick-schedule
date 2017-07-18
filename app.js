@@ -62,7 +62,7 @@ waterfall([
 	}, 
 	// Grab tournament by name
 	(cb) => {
-		request.get(BASE_URL + '/v1/me/tournaments?name=' + TOURNAMENT_NAME, {
+		request.get(BASE_URL + '/v1/me/tournaments' , {
 			'headers': {
 				'X-Api-Key': cred.api_key,
 				'Authorization': 'Bearer ' + cred.access_token
@@ -73,9 +73,10 @@ waterfall([
 	(res,body,cb) => {
 		if(res.statusCode == 200 && body){
 			let json = JSON.parse(body);
-			tournamentId = json[0] && json[0].id;
+			json = json.find((x) => {return x.name === TOURNAMENT_NAME});
+			tournamentId = json.id;
 			if(tournamentId){
-				console.log('Tournament found: ' + json[0].name);
+				console.log('Tournament found: ' + json.name);
 				cb()
 			} else{
 				cb('No tournament ID found');
