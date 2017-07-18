@@ -4,7 +4,16 @@ var waterfall = require('async/waterfall');
 var cred = require('./credentials.json');
 var BASE_URL = 'https://api.toornament.com';
 var tournamentId;
-var TOURNAMENT_NAME = 'ZackariasTestTurnering';
+var TOURNAMENT_NAME;
+var rounds = [
+	{simultaneousMatches: 6}, 
+	{simultaneousMatches: 4},
+	{simultaneousMatches: 4},
+	{simultaneousMatches: 4},
+	{simultaneousMatches: 1},
+	{simultaneousMatches: 1}
+]
+
 
 function addMinutes(date,minutes) {
 	return new Date(date.getTime() + minutes*60000);	
@@ -90,10 +99,7 @@ waterfall([
 			let makePatchBody = (date,matchIndex) => {
 				// date on format "2015-09-06T00:10:00-0600"
 				return {
-					'date': date.toISOString().substring(0,19) + '-0000'
-					/*date.toLocaleDateString() + 
-							'T' + date.toLocaleTimeString() + 
-							date.toTimeString().substring(12,17)*/,
+					'date': date.toISOString().substring(0,19) + '-0000',
 					'notes': 'Match ' + matchIndex+1
 				}
 			};
@@ -104,10 +110,15 @@ waterfall([
 					cb();
 					return;
 				}
-				if((!(matchIndex % 6) && matchIndex) || noMatches-matchIndex <= 3)
+				let match = matches[matchIndex];
+				let matchNumber = match.number;
+				let roundNumber = match.round_number;
+				let simultaneousMatches = rounds[roundNumber-1].simultaneousMatches;
+				if(matchIndex && !((matchNumber - 1) % simultaneousMatches)) {
 					date = addMinutes(date, 25);
+				}
 
-				let matchId = matches[matchIndex].id;
+				let matchId = match.id;
 				request.patch(
 					BASE_URL + '/v1/tournaments/' + tournamentId
 					+ '/matches/' + matchId, 
