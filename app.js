@@ -102,11 +102,11 @@ waterfall([
 			let noMatches = matches.length;
 			console.log(noMatches + ' games total');
 
-			let makePatchBody = (date,matchIndex) => {
+			let makePatchBody = (date,room) => {
 				// date on format "2015-09-06T00:10:00-0600"
 				return {
 					'date': date.toISOString().substring(0,19) + '-0000',
-					'notes': 'Match ' + matchIndex+1
+					'note': 'Spelstation ' + (room)
 				}
 			};
 
@@ -120,6 +120,7 @@ waterfall([
 				let matchNumber = match.number;
 				let roundNumber = match.round_number;
 				let simultaneousMatches = rounds[roundNumber-1].simultaneousMatches;
+				let roomNumber = ((matchNumber-1) % simultaneousMatches) + 1;
 				let pauseBefore = rounds[roundNumber-1].pauseBefore;
 				if(matchIndex && !((matchNumber - 1) % simultaneousMatches)) {
 					date = addMinutes(date, 25);
@@ -137,7 +138,7 @@ waterfall([
 						'X-Api-Key': cred.api_key,
 						'Authorization': 'Bearer ' + cred.access_token
 					},
-					'form': JSON.stringify(makePatchBody(date,matchIndex))
+					'form': JSON.stringify(makePatchBody(date,roomNumber ))
 				},
 				(err, res, body) => {
 					if(res.statusCode === 200) {
